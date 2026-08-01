@@ -1,0 +1,483 @@
+<!--🎮 Minecraft Skin Creator by Dragón Primordial-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Crea tu propia skin de Minecraft personalizada. Por Dragón Primordial." />
+  <meta name="author" content="Dragón Primordial" />
+  <title>🎮 Minecraft Skin Creator — Dragón Primordial</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Minecraft Skin Creator" />
+  <meta property="og:description" content="Diseña tu propia skin épica de Minecraft y descárgala directamente." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #0A0E20; font-family: Georgia, 'Times New Roman', serif; }
+    #root { min-height: 100vh; }
+
+    /* Scrollbar minecraft */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #050A18; }
+    ::-webkit-scrollbar-thumb { background: #1A5A3A; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00FF00; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React 18 + Babel JSX -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useRef, useEffect } = React;
+
+    /* ─── DATOS ─────────────────────────────────────────── */
+    const SKIN_PARTS = {
+      head:     { label: "Cabeza",      zone: "head",    desc: "Rostro y características" },
+      body:     { label: "Cuerpo",      zone: "body",    desc: "Torso y pecho" },
+      armL:     { label: "Brazo Izq",   zone: "armL",    desc: "Brazo izquierdo" },
+      armR:     { label: "Brazo Der",   zone: "armR",    desc: "Brazo derecho" },
+      legL:     { label: "Pierna Izq",  zone: "legL",    desc: "Pierna izquierda" },
+      legR:     { label: "Pierna Der",  zone: "legR",    desc: "Pierna derecha" },
+    };
+
+    const COLOR_PRESETS = {
+      dragon:   { name: "Dragón",      colors: { head: "#2d2d5c", body: "#3d4a6b", limbs: "#5a4a8a", accent: "#ff6b9d" } },
+      skeleton: { name: "Esqueleto",   colors: { head: "#9a9a9a", body: "#8a8a8a", limbs: "#7a7a7a", accent: "#000000" } },
+      creeper:  { name: "Creeper",     colors: { head: "#4a7c3a", body: "#5a8c4a", limbs: "#4a7c3a", accent: "#3a6c2a" } },
+      nether:   { name: "Nether",      colors: { head: "#8b1515", body: "#a01a1a", limbs: "#951f1f", accent: "#ffaa00" } },
+      ocean:    { name: "Oceano",      colors: { head: "#1a5a7a", body: "#2a6a9a", limbs: "#1a4a6a", accent: "#00ffff" } },
+      forest:   { name: "Bosque",      colors: { head: "#2d5a1a", body: "#3a6a2a", limbs: "#2d5a1a", accent: "#ffff00" } },
+      twilight: { name: "Crepúsculo",  colors: { head: "#4a3a7a", body: "#6a5a9a", limbs: "#5a4a8a", accent: "#ff1493" } },
+      sunset:   { name: "Atardecer",   colors: { head: "#8a3a1a", body: "#aa5a2a", limbs: "#9a4a2a", accent: "#ffaa00" } },
+    };
+
+    const SOCIALS = [
+      { icon: "🎵", label: "TikTok",    href: "https://www.tiktok.com/@dragonprimordial?lang=es" },
+      { icon: "𝕏",  label: "Twitter",   href: "https://x.com/dragonprimordia" },
+      { icon: "📸", label: "Instagram", href: "https://www.instagram.com/dragonprimordial/" },
+      { icon: "🧵", label: "Threads",   href: "https://www.threads.com/@dragonprimordial" },
+      { icon: "📘", label: "Facebook",  href: "https://www.facebook.com/profile.php?id=61575355656190" },
+      { icon: "💬", label: "Discord",   href: "https://discord.com/channels/1489401096530301128/1489401098518139032" },
+      { icon: "▶️", label: "YouTube",   href: "https://www.youtube.com/@Drag%C3%B3nPrimordial" },
+    ];
+
+    /* ─── DIBUJADOR DE SKIN ──────────────────────────────── */
+    function drawMinecraftSkin(canvas, colors) {
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      ctx.fillStyle = 'rgba(0,0,0,0)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const px = 16; // Tamaño de píxel en el canvas
+
+      // Cabeza (8x8)
+      ctx.fillStyle = colors.head;
+      ctx.fillRect(0, 0, 8 * px, 8 * px);
+      
+      // Ojos
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(px, 2 * px, px, px);
+      ctx.fillRect(3 * px, 2 * px, px, px);
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(px + 2, 2 * px + 2, 4, 4);
+      ctx.fillRect(3 * px + 2, 2 * px + 2, 4, 4);
+
+      // Boca
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(2 * px, 4 * px, 2 * px, 1 * px);
+
+      // Cuerpo (8x12)
+      ctx.fillStyle = colors.body;
+      ctx.fillRect(0, 8 * px, 8 * px, 12 * px);
+      
+      // Acento en el pecho
+      ctx.fillStyle = colors.accent;
+      ctx.fillRect(2 * px, 8 * px, 4 * px, 2 * px);
+
+      // Brazo izquierdo (4x12)
+      ctx.fillStyle = colors.limbs;
+      ctx.fillRect(8 * px, 8 * px, 4 * px, 12 * px);
+      
+      // Brazo derecho (4x12)
+      ctx.fillStyle = colors.limbs;
+      ctx.fillRect(0, 20 * px, 4 * px, 12 * px);
+
+      // Pierna izquierda (4x12)
+      ctx.fillStyle = colors.limbs;
+      ctx.fillRect(4 * px, 20 * px, 4 * px, 12 * px);
+
+      // Pierna derecha (4x12)
+      ctx.fillStyle = colors.limbs;
+      ctx.fillRect(12 * px, 20 * px, 4 * px, 12 * px);
+    }
+
+    /* ─── COMPONENTE PRINCIPAL ──────────────────────────── */
+    function App() {
+      const canvasRef = useRef(null);
+      const [colors, setColors] = useState({
+        head: '#3d4a6b',
+        body: '#5a4a8a',
+        limbs: '#7a6aaa',
+        accent: '#ff6b9d',
+      });
+      const [hoveredPart, setHoveredPart] = useState(null);
+      const [hoveredSocial, setHoveredSocial] = useState(null);
+      const [downloadMode, setDownloadMode] = useState(null);
+
+      useEffect(() => {
+        if (canvasRef.current) {
+          drawMinecraftSkin(canvasRef.current, colors);
+        }
+      }, [colors]);
+
+      const handleColorChange = (key, value) => {
+        setColors(prev => ({ ...prev, [key]: value }));
+      };
+
+      const handlePreset = (preset) => {
+        setColors(preset.colors);
+      };
+
+      const downloadSkin = (format) => {
+        const canvas = canvasRef.current;
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = `minecraft_skin_${Date.now()}.png`;
+        link.click();
+      };
+
+      const outer = { 
+        background: "linear-gradient(170deg,#0A0E20 0%,#1A1E35 100%)", 
+        minHeight: "100vh", 
+        padding: "20px 16px 30px", 
+        fontFamily: "Georgia,'Times New Roman',serif", 
+        color: "#C8B8A8" 
+      };
+      const panel = { 
+        background: "rgba(10,14,32,0.92)", 
+        border: "1px solid #1A5A3A", 
+        borderRadius: 8 
+      };
+      const btnBase = { 
+        background: "transparent", 
+        borderRadius: 6, 
+        padding: "9px 0", 
+        fontSize: 12, 
+        cursor: "pointer", 
+        letterSpacing: 1, 
+        fontFamily: "Georgia", 
+        width: "100%",
+        transition: "all 0.2s"
+      };
+
+      return (
+        <div style={outer}>
+
+          {/* TÍTULO */}
+          <h1 style={{ 
+            textAlign: "center", 
+            fontSize: "clamp(18px,3.5vw,26px)", 
+            letterSpacing: 6, 
+            color: "#00FF00", 
+            margin: "0 0 4px", 
+            textTransform: "uppercase", 
+            fontWeight: "normal",
+            textShadow: "0 0 10px rgba(0,255,0,0.3)"
+          }}>
+            🎮 MINECRAFT SKIN CREATOR
+          </h1>
+          <p style={{ 
+            textAlign: "center", 
+            fontSize: 12, 
+            color: "#2A7A3A", 
+            margin: "0 0 18px", 
+            letterSpacing: 2 
+          }}>
+            PERSONALIZA TU PROPIA SKIN ÉPICA
+          </p>
+
+          <div style={{ 
+            display: "flex", 
+            gap: 18, 
+            maxWidth: 1000, 
+            margin: "0 auto", 
+            flexWrap: "wrap" 
+          }}>
+
+            {/* ══ PREVIEW ══════════════════════════════════════════ */}
+            <div style={{ 
+              flex: "1 1 300px", 
+              minWidth: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}>
+              <div style={{
+                ...panel,
+                padding: "20px",
+                width: "100%",
+                textAlign: "center",
+                marginBottom: "16px"
+              }}>
+                <p style={{ fontSize: 11, color: "#2A7A3A", letterSpacing: 1, margin: "0 0 12px" }}>
+                  VISTA PREVIA
+                </p>
+                <canvas 
+                  ref={canvasRef} 
+                  width={128} 
+                  height={256}
+                  style={{ 
+                    width: "100%",
+                    height: "auto",
+                    border: "2px solid #1A5A3A",
+                    borderRadius: 6,
+                    imageRendering: "pixelated",
+                    imageRendering: "crisp-edges",
+                  }} 
+                />
+              </div>
+
+              <div style={{
+                ...panel,
+                padding: "14px 16px",
+                width: "100%"
+              }}>
+                <p style={{ fontSize: 11, color: "#2A7A3A", letterSpacing: 1, margin: "0 0 10px" }}>
+                  PRESETS RÁPIDOS
+                </p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                  {Object.entries(COLOR_PRESETS).map(([key, preset]) => (
+                    <button
+                      key={key}
+                      onClick={() => handlePreset(preset)}
+                      style={{
+                        ...btnBase,
+                        border: "1px solid #1A5A3A",
+                        color: "#7AA87A",
+                        padding: "8px 12px",
+                        fontSize: 11,
+                        background: "rgba(26,90,58,0.2)"
+                      }}
+                    >
+                      {preset.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* ══ CONTROLES ════════════════════════════════════════ */}
+            <div style={{ flex: "1 1 320px", minWidth: 0 }}>
+              <div style={{ ...panel, padding: "18px 16px" }}>
+                <p style={{ 
+                  fontSize: 11, 
+                  color: "#2A7A3A", 
+                  letterSpacing: 1, 
+                  margin: "0 0 14px",
+                  textTransform: "uppercase"
+                }}>
+                  Personalización
+                </p>
+
+                {/* SELECTOR DE COLORES */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
+                  {[
+                    { key: 'head', label: '👤 Cabeza', desc: 'Rostro y características' },
+                    { key: 'body', label: '👕 Cuerpo', desc: 'Torso principal' },
+                    { key: 'limbs', label: '💪 Extremidades', desc: 'Brazos y piernas' },
+                    { key: 'accent', label: '✨ Acentos', desc: 'Detalles especiales' },
+                  ].map(({ key, label, desc }) => (
+                    <div key={key} style={{ 
+                      background: "rgba(26,90,58,0.15)",
+                      border: "1px solid #1A5A3A",
+                      borderRadius: 6,
+                      padding: "12px",
+                      transition: "all 0.2s"
+                    }}>
+                      <p style={{ fontSize: 12, color: "#7AA87A", margin: "0 0 6px", fontWeight: "bold" }}>
+                        {label}
+                      </p>
+                      <p style={{ fontSize: 10, color: "#2A7A3A", margin: "0 0 10px" }}>
+                        {desc}
+                      </p>
+                      <input
+                        type="color"
+                        value={colors[key]}
+                        onChange={(e) => handleColorChange(key, e.target.value)}
+                        style={{
+                          width: "100%",
+                          height: "36px",
+                          border: "1px solid #1A5A3A",
+                          borderRadius: 4,
+                          cursor: "pointer"
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* BOTONES DE DESCARGA */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  <button
+                    onClick={() => downloadSkin('64')}
+                    style={{
+                      ...btnBase,
+                      border: "1px solid #1A5A3A",
+                      color: "#7AA87A",
+                      background: "rgba(26,90,58,0.3)",
+                      padding: "10px"
+                    }}
+                  >
+                    📥 Descargar PNG
+                  </button>
+                  <button
+                    onClick={() => {
+                      setColors({
+                        head: '#3d4a6b',
+                        body: '#5a4a8a',
+                        limbs: '#7a6aaa',
+                        accent: '#ff6b9d',
+                      });
+                    }}
+                    style={{
+                      ...btnBase,
+                      border: "1px solid #1A5A3A",
+                      color: "#7AA87A",
+                      background: "rgba(26,90,58,0.2)",
+                      padding: "10px"
+                    }}
+                  >
+                    ↺ Reiniciar
+                  </button>
+                </div>
+              </div>
+
+              {/* INSTRUCCIONES */}
+              <div style={{
+                ...panel,
+                padding: "14px 16px",
+                marginTop: "12px",
+                background: "rgba(42,75,58,0.25)",
+                border: "1px solid #2A5A3A"
+              }}>
+                <p style={{ 
+                  fontSize: 11, 
+                  color: "#7AA87A", 
+                  margin: "0 0 10px",
+                  fontWeight: "bold"
+                }}>
+                  📋 INSTRUCCIONES
+                </p>
+                <ol style={{ 
+                  fontSize: 11, 
+                  color: "#4A8A5A", 
+                  lineHeight: "1.8",
+                  marginLeft: "20px",
+                  margin: 0
+                }}>
+                  <li>Elige tus colores personalizados</li>
+                  <li>Usa los presets para inspiración rápida</li>
+                  <li>Descarga tu skin en PNG</li>
+                  <li>En TLauncher: Área de usuario → Subir skin</li>
+                  <li>Selecciona el archivo descargado</li>
+                  <li>¡Tu skin está lista!</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          {/* ══ INFO TÉCNICA ════════════════════════════════════ */}
+          <div style={{ ...panel, maxWidth: 1000, margin: "16px auto 0", padding: "14px 18px" }}>
+            <div style={{ fontSize: 15, color: "#00FF00", marginBottom: 8, fontWeight: "bold" }}>
+              ⚙️ INFORMACIÓN TÉCNICA
+            </div>
+            <div style={{ fontSize: 12, color: "#4A8A5A", lineHeight: 1.8 }}>
+              <p style={{ margin: "0 0 8px" }}>
+                Las skins de Minecraft son imágenes PNG de 64x64 píxeles. Cada región del cuerpo del jugador tiene un área específica en la textura.
+                Puedes personalizar completamente el color de cada parte de tu personaje.
+              </p>
+              <p style={{ margin: "0 0 8px" }}>
+                <strong style={{ color: "#00FF00" }}>Compatibilidad:</strong> Esta skin funciona con Java Edition en TLauncher, Minecraft Launcher y otros clientes.
+              </p>
+              <p style={{ margin: 0 }}>
+                <strong style={{ color: "#00FF00" }}>Formato:</strong> La descarga es automática en PNG. Compatible con cualquier modpack o versión.
+              </p>
+            </div>
+          </div>
+
+          {/* ══ REDES SOCIALES ══════════════════════════════════ */}
+          <div style={{ ...panel, maxWidth: 1000, margin: "10px auto 0", padding: "12px 18px" }}>
+            <div style={{ fontSize: 10, color: "#2A7A3A", letterSpacing: 3, marginBottom: 10, textAlign: "center" }}>
+              🎮 SÍGUENOS · DRAGÓN PRIMORDIAL
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center" }}>
+              {SOCIALS.map(({ icon, label, href }) => (
+                <a 
+                  key={label} 
+                  href={href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => setHoveredSocial(label)}
+                  onMouseLeave={() => setHoveredSocial(null)}
+                  style={{
+                    display: "flex", 
+                    alignItems: "center", 
+                    gap: 6,
+                    padding: "6px 13px",
+                    background: hoveredSocial === label ? "rgba(0,255,0,0.12)" : "rgba(255,255,255,0.02)",
+                    border: `1px solid ${hoveredSocial === label ? "#00FF00" : "#1A5A3A"}`,
+                    borderRadius: 6, 
+                    color: hoveredSocial === label ? "#00FF00" : "#5A8A6A",
+                    textDecoration: "none", 
+                    fontSize: 12, 
+                    fontFamily: "Georgia",
+                    transition: "all 0.2s", 
+                    letterSpacing: "0.05em",
+                  }}>
+                  <span style={{ fontSize: 14 }}>{icon}</span>
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* PIE */}
+          <p style={{ 
+            textAlign: "center", 
+            fontSize: 10, 
+            color: "#2A5A3A", 
+            marginTop: 16, 
+            letterSpacing: 1 
+          }}>
+            🎨 PERSONALIZA TU PERSONAJE · 🎮 JUEGA CON ESTILO
+          </p>
+          <p style={{ 
+            textAlign: "center", 
+            fontSize: 10, 
+            color: "#1A4A2A", 
+            marginTop: 4, 
+            letterSpacing: 1 
+          }}>
+            © Dragón Primordial · @dragonprimordial · Hecho con React
+          </p>
+
+        </div>
+      );
+    }
+
+    /* ─── MONTAR ─────────────────────────────────────────── */
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
