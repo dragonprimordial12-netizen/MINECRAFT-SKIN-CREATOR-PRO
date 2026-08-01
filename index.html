@@ -1,811 +1,677 @@
-<!--🎮 MINECRAFT SKIN CREATOR PRO — Dragón Primordial-->
+<!--🎮 MINECRAFT SKIN FORGE 🎮 — Dragón Primordial-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Crea skins épicas de Minecraft con editor avanzado. Por Dragón Primordial." />
-  <meta name="author" content="Dragón Primordial" />
-  <title>🎮 MINECRAFT SKIN CREATOR PRO — Dragón Primordial</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Forja skins épicas de Minecraft. Editor avanzado por Dragón Primordial.">
+<meta name="keywords" content="Minecraft, skins, editor, Dragón Primordial">
+<title>🎮 MINECRAFT SKIN FORGE 🎮</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fire: #ff4d00;
+    --ember: #ff8c00;
+    --gold: #ffd700;
+    --dark: #050305;
+    --blood: #8b0000;
+    --crystal: #00c8ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: #e8d5b0; font-family: 'Cinzel', serif; overflow-x: hidden; }
+  #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 
-  <meta property="og:title" content="Minecraft Skin Creator Pro" />
-  <meta property="og:description" content="Editor avanzado de skins de Minecraft con presets, gradientes y editor de cara." />
-  <meta property="og:type" content="website" />
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(5,3,5,0.93); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,80,0,0.2);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.65rem 2rem; gap: 1rem; flex-wrap: wrap;
+  }
+  .nav-logo {
+    font-family: 'Cinzel Decorative', serif; font-size: 0.72rem;
+    background: linear-gradient(90deg, #ff8c00, #ffd700);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; letter-spacing: 0.05em; white-space: nowrap;
+  }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; align-items: center; }
+  .nav-links a {
+    color: #907060; text-decoration: none; font-size: 0.58rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.4rem 0.65rem; transition: color 0.2s; white-space: nowrap;
+    cursor: pointer;
+  }
+  .nav-links a:hover { color: var(--ember); }
+  .nav-play {
+    font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.45rem 1.1rem; border: none; cursor: pointer;
+    background: linear-gradient(135deg, #ff4500, #ff8c00); color: #fff;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    margin-left: 0.5rem; transition: all 0.2s;
+  }
+  .nav-play:hover { background: linear-gradient(135deg, #ff6a00, #ffb000); transform: translateY(-1px); }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  /* HERO */
+  .hero {
+    position: relative; min-height: 92vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; z-index: 1; padding: 6rem 2rem 2rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 80%, rgba(180,40,0,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(80,0,120,0.3) 0%, transparent 60%);
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect width='60' height='60' fill='none'/%3E%3Cpath d='M0 0 L60 60 M60 0 L0 60' stroke='rgba(255,120,0,0.03)' stroke-width='0.5'/%3E%3C/svg%3E") repeat;
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-size: 0.7rem; letter-spacing: 0.5em; color: var(--ember);
+    text-transform: uppercase; margin-bottom: 1.5rem; animation: fadeDown 1s ease both;
+  }
+  .logo-wrap { position: relative; display: inline-block; margin-bottom: 1.5rem; animation: blazeIn 1.2s cubic-bezier(.2,.8,.3,1) both; }
+  h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.8rem, 6.5vw, 5rem); font-weight: 900;
+    letter-spacing: 0.04em; line-height: 1.05;
+    background: linear-gradient(160deg, #ffe680 0%, #ff8c00 35%, #ff2200 65%, #9b00ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(255,100,0,0.6)); position: relative; z-index: 1;
+  }
+  .hero-tagline {
+    margin-top: 1.2rem; font-family: 'IM Fell English', serif; font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.35rem); color: #d4b88a; max-width: 640px;
+    line-height: 1.7; animation: fadeUp 1.4s ease both 0.3s;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+  }
+  .cta-group { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center; animation: fadeUp 1.4s ease both 0.6s; }
+  .btn {
+    font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 0.9rem 2.4rem; border: none; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: all 0.25s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .btn-fire { background: linear-gradient(135deg, #ff4500, #ff8c00); color: #fff; box-shadow: 0 0 30px rgba(255,80,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2); }
+  .btn-fire:hover { background: linear-gradient(135deg, #ff6a00, #ffaa00); box-shadow: 0 0 50px rgba(255,120,0,0.7); transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: var(--ember); border: 1px solid rgba(255,140,0,0.4); }
+  .btn-ghost:hover { background: rgba(255,100,0,0.1); border-color: var(--ember); transform: translateY(-2px); }
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    opacity: 0.5; animation: float 2s ease-in-out infinite;
+    font-size: 0.65rem; letter-spacing: 0.3em; color: var(--ember);
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  }
+  .scroll-hint::after { content: '▼'; font-size: 0.8rem; }
 
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { background: #0A0E20; font-family: Georgia, 'Times New Roman', serif; }
-    #root { min-height: 100vh; }
+  .divider { width: 100%; height: 2px; position: relative; z-index: 1; background: linear-gradient(90deg, transparent, var(--fire), var(--gold), var(--fire), transparent); }
+  .divider::before {
+    content: attr(data-icon); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    background: var(--dark); padding: 0 1rem; color: var(--gold); font-size: 1.2rem;
+  }
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #050A18; }
-    ::-webkit-scrollbar-thumb { background: #1A5A3A; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #00FF00; }
+  section { position: relative; z-index: 1; padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+  .section-title {
+    font-family: 'Cinzel Decorative', serif; font-size: clamp(1.2rem, 3vw, 2rem);
+    text-align: center; margin-bottom: 0.5rem; color: var(--gold);
+    letter-spacing: 0.1em; text-shadow: 0 0 20px rgba(255,215,0,0.4);
+  }
+  .section-sub { font-family: 'IM Fell English', serif; font-style: italic; text-align: center; color: #a08060; margin-bottom: 3rem; font-size: 1rem; }
 
-    input[type="range"] {
-      width: 100%;
-      height: 6px;
-      border-radius: 3px;
-      background: linear-gradient(to right, #1A5A3A, #00FF00);
-      outline: none;
-      -webkit-appearance: none;
-    }
+  .lore-strip {
+    background: linear-gradient(135deg, rgba(60,0,0,0.5), rgba(30,0,60,0.5));
+    border: 1px solid rgba(255,80,0,0.15); padding: 3rem 2rem; text-align: center;
+    position: relative; overflow: hidden; margin: 0 auto 2rem; max-width: 800px; z-index: 1;
+  }
+  .lore-strip::before { content: '◆'; position: absolute; font-size: 4rem; color: rgba(255,100,0,0.05); top: -1rem; left: -1rem; }
+  .lore-strip::after  { content: '◆'; position: absolute; font-size: 4rem; color: rgba(255,100,0,0.05); bottom: -1rem; right: -1rem; }
+  .lore-strip p { font-family: 'IM Fell English', serif; font-style: italic; font-size: clamp(0.95rem, 2vw, 1.15rem); line-height: 1.9; color: #c8a878; position: relative; z-index: 1; }
+  .lore-strip .highlight { color: var(--gold); font-style: normal; font-family: 'Cinzel', serif; font-size: 0.85em; }
 
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #00FF00;
-      cursor: pointer;
-      box-shadow: 0 0 8px rgba(0,255,0,0.5);
-    }
+  .forge-grid { display: grid; grid-template-columns: 340px 1fr; gap: 2rem; align-items: start; }
+  @media(max-width: 880px) { .forge-grid { grid-template-columns: 1fr; } }
 
-    input[type="range"]::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #00FF00;
-      cursor: pointer;
-      border: none;
-      box-shadow: 0 0 8px rgba(0,255,0,0.5);
-    }
-  </style>
+  .forge-panel {
+    background: linear-gradient(145deg, rgba(20,8,5,0.9), rgba(10,3,15,0.9));
+    border: 1px solid rgba(255,140,0,0.2); padding: 1.6rem;
+    position: relative; overflow: hidden;
+    clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
+  }
+  .forge-panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--ember), transparent); }
+  .forge-panel + .forge-panel { margin-top: 1.5rem; }
+
+  .forge-label { font-size: 0.62rem; letter-spacing: 0.25em; color: var(--ember); text-transform: uppercase; margin-bottom: 0.9rem; text-align: center; }
+
+  .name-input {
+    width: 100%; padding: 0.7rem 1rem; background: rgba(255,80,0,0.06);
+    border: 1px solid rgba(255,140,0,0.25); color: #e8c898; font-family: 'IM Fell English', serif;
+    font-style: italic; font-size: 0.95rem; text-align: center; margin-bottom: 0.7rem;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  }
+  .name-input:focus { outline: none; border-color: var(--ember); }
+
+  .ghost-btn {
+    width: 100%; font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.6rem; background: rgba(255,80,0,0.08);
+    border: 1px solid rgba(255,140,0,0.25); color: #a08060; cursor: pointer; transition: all 0.2s;
+    clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+  }
+  .ghost-btn:hover { color: var(--ember); border-color: var(--ember); background: rgba(255,100,0,0.15); }
+
+  canvas#skinCanvas {
+    width: 100%; height: auto; image-rendering: pixelated;
+    border: 2px solid var(--ember); box-shadow: 0 0 30px rgba(255,120,0,0.3);
+    background: repeating-conic-gradient(#0d0710 0% 25%, #100a15 0% 50%) 0 0/16px 16px;
+  }
+
+  .download-btn {
+    width: 100%; margin-top: 1rem; font-family: 'Cinzel', serif; font-size: 0.78rem;
+    letter-spacing: 0.2em; text-transform: uppercase; padding: 1rem; border: none; cursor: pointer;
+    background: linear-gradient(135deg, #ff4500, #ff8c00); color: #fff;
+    box-shadow: 0 0 30px rgba(255,80,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: all 0.25s;
+  }
+  .download-btn:hover { background: linear-gradient(135deg, #ff6a00, #ffaa00); box-shadow: 0 0 50px rgba(255,120,0,0.7); transform: translateY(-2px); }
+
+  .forge-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .forge-tab {
+    flex: 1; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 0.65rem 0.5rem; background: transparent;
+    border: 1px solid rgba(255,140,0,0.25); color: #a08060; cursor: pointer; transition: all 0.2s;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    text-align: center;
+  }
+  .forge-tab.active, .forge-tab:hover { background: rgba(255,100,0,0.15); border-color: var(--ember); color: var(--ember); }
+  .forge-panel-tab { display: none; }
+  .forge-panel-tab.active { display: block; }
+
+  .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
+  .color-slot label { display: block; font-size: 0.66rem; letter-spacing: 0.08em; color: #c0a080; margin-bottom: 0.4rem; text-transform: uppercase; }
+  .color-slot input[type="color"] {
+    width: 100%; height: 42px; border: 2px solid rgba(255,140,0,0.3); cursor: pointer; background: none;
+    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+  }
+
+  .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.7rem; max-height: 340px; overflow-y: auto; padding-right: 4px; }
+  .preset-card {
+    background: rgba(10,3,5,0.75); border: 1px solid rgba(255,140,0,0.15); padding: 0.85rem 0.6rem;
+    text-align: center; cursor: pointer; transition: all 0.25s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .preset-card:hover, .preset-card.selected { transform: translateY(-3px); border-color: var(--ember); background: rgba(255,100,0,0.1); }
+  .preset-card .p-name { font-size: 0.65rem; letter-spacing: 0.04em; color: #d4b88a; }
+
+  .option-row {
+    display: flex; align-items: center; gap: 1rem;
+    background: rgba(10,5,3,0.7); border: 1px solid rgba(255,80,0,0.15);
+    padding: 0.85rem 1.1rem; margin-bottom: 0.6rem; cursor: pointer; transition: all 0.2s; position: relative;
+  }
+  .option-row::before { content: '♦'; color: var(--fire); font-size: 0.7rem; }
+  .option-row:hover, .option-row.selected { background: rgba(255,80,0,0.08); border-color: rgba(255,80,0,0.4); padding-left: 1.4rem; }
+  .option-row.selected { border-color: var(--ember); }
+  .option-emoji { font-size: 1.3rem; }
+  .option-name { font-size: 0.75rem; letter-spacing: 0.06em; color: #c0a080; text-transform: uppercase; }
+
+  .face-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media(max-width: 500px) { .face-cols { grid-template-columns: 1fr; } }
+  .face-cols h4 { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.7rem; }
+
+  .info-block {
+    background: rgba(10,3,5,0.7); border: 1px solid rgba(255,50,0,0.2); padding: 2rem;
+    position: relative; overflow: hidden;
+  }
+  .info-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--blood), transparent); }
+  .info-block p { font-size: 0.85rem; color: #c0a080; line-height: 1.9; margin-bottom: 0.8rem; }
+  .info-block strong { color: var(--ember); }
+
+  .social-section { position: relative; z-index: 1; padding: 4rem 2rem; text-align: center; }
+  .social-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; max-width: 800px; margin: 2rem auto 0; }
+  .social-link {
+    display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none;
+    font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.7rem 1.4rem; border: 1px solid rgba(255,140,0,0.2); color: #a08060;
+    transition: all 0.25s; clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    background: rgba(255,80,0,0.04);
+  }
+  .social-link:hover { color: var(--ember); border-color: var(--ember); background: rgba(255,80,0,0.1); transform: translateY(-3px); }
+  .social-link .s-icon { font-size: 1.1rem; }
+
+  footer {
+    position: relative; z-index: 1; text-align: center;
+    padding: 3rem 2rem; border-top: 1px solid rgba(255,80,0,0.15);
+    font-size: 0.7rem; letter-spacing: 0.15em; color: #604030;
+  }
+  footer span { color: var(--fire); }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(30px);  } to { opacity: 1; transform: translateY(0); } }
+  @keyframes blazeIn  { from { opacity: 0; transform: scale(0.85); filter: blur(10px); } to { opacity: 1; transform: scale(1); filter: none; } }
+  @keyframes float    { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--blood); border-radius: 3px; }
+</style>
 </head>
 <body>
-  <div id="root"></div>
 
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<canvas id="particles"></canvas>
 
-  <script type="text/babel">
-    const { useState, useRef, useEffect } = React;
+<nav>
+  <span class="nav-logo">🎮 MINECRAFT SKIN FORGE</span>
+  <div class="nav-links">
+    <a href="#forja">🔨 Forja</a>
+    <a href="#info">ℹ️ Info</a>
+    <a href="#redes">📣 Comunidad</a>
+    <a class="nav-play" onclick="document.getElementById('downloadBtn').click()">📥 DESCARGAR</a>
+  </div>
+</nav>
 
-    /* ─── GENERADOR DE NOMBRES ───────────────────────────── */
-    const NOMBRE_PARTS = {
-      adjectives: ["Épico", "Oscuro", "Misterioso", "Luminoso", "Salvaje", "Antiguo", "Ardiente", "Gélido", "Espectral", "Etéreo", "Divino", "Infernal"],
-      nouns: ["Dragón", "Guerrero", "Brujo", "Espectro", "Titán", "Fénix", "Demonio", "Ángel", "Berserker", "Apóstol", "Esencia", "Vengador"],
-    };
+<div class="hero">
+  <p class="eyebrow">Minecraft · Editor Avanzado · Dragón Primordial</p>
+  <div class="logo-wrap">
+    <h1>🎮 SKIN FORGE 🎮</h1>
+  </div>
+  <p class="hero-tagline">
+    Forja la piel de tu personaje con tus propias manos.<br>
+    Elige tus colores. Marca tu rostro. Desata tu leyenda en el servidor.
+  </p>
+  <div class="cta-group">
+    <a href="#forja" class="btn btn-fire">🔨 Empezar a Forjar</a>
+    <a href="#info" class="btn btn-ghost">ℹ️ Cómo Instalarla</a>
+  </div>
+  <div class="scroll-hint">EXPLORAR</div>
+</div>
 
-    function generateSkinName() {
-      const adj = NOMBRE_PARTS.adjectives[Math.floor(Math.random() * NOMBRE_PARTS.adjectives.length)];
-      const noun = NOMBRE_PARTS.nouns[Math.floor(Math.random() * NOMBRE_PARTS.nouns.length)];
-      return `${adj} ${noun}`;
-    }
+<div class="divider" data-icon="⚒"></div>
 
-    /* ─── PALETAS DE PRESETS ─────────────────────────────── */
-    const COLOR_PRESETS = {
-      dragon:   { name: "🐉 Dragón Épico",      colors: { head: "#2d2d5c", body: "#3d4a6b", limbs: "#5a4a8a", accent: "#ff6b9d", eyes: "#ffff00" } },
-      skeleton: { name: "💀 Esqueleto",         colors: { head: "#9a9a9a", body: "#8a8a8a", limbs: "#7a7a7a", accent: "#000000", eyes: "#333333" } },
-      creeper:  { name: "🟩 Creeper",           colors: { head: "#4a7c3a", body: "#5a8c4a", limbs: "#4a7c3a", accent: "#3a6c2a", eyes: "#000000" } },
-      nether:   { name: "🔥 Nether Warrior",    colors: { head: "#8b1515", body: "#a01a1a", limbs: "#951f1f", accent: "#ffaa00", eyes: "#ff0000" } },
-      ocean:    { name: "🌊 Oceano Profundo",   colors: { head: "#1a5a7a", body: "#2a6a9a", limbs: "#1a4a6a", accent: "#00ffff", eyes: "#00ccff" } },
-      forest:   { name: "🌲 Bosque Encantado",  colors: { head: "#2d5a1a", body: "#3a6a2a", limbs: "#2d5a1a", accent: "#ffff00", eyes: "#00ff00" } },
-      twilight: { name: "🌙 Crepúsculo",        colors: { head: "#4a3a7a", body: "#6a5a9a", limbs: "#5a4a8a", accent: "#ff1493", eyes: "#9933ff" } },
-      sunset:   { name: "🌅 Atardecer",         colors: { head: "#8a3a1a", body: "#aa5a2a", limbs: "#9a4a2a", accent: "#ffaa00", eyes: "#ff6600" } },
-      void:     { name: "⚫ Void",               colors: { head: "#0a0a0a", body: "#1a1a1a", limbs: "#0f0f0f", accent: "#ff00ff", eyes: "#00ffff" } },
-      radiant:  { name: "✨ Radiante",          colors: { head: "#ffff99", body: "#ffff66", limbs: "#ffff33", accent: "#ffffff", eyes: "#ffff00" } },
-      shadow:   { name: "🌑 Sombra Ninja",      colors: { head: "#1a1a1a", body: "#2a2a2a", limbs: "#1f1f1f", accent: "#ff0000", eyes: "#ff0000" } },
-      crystal:  { name: "💎 Cristal",           colors: { head: "#00ffff", body: "#00ff88", limbs: "#00ff99", accent: "#00ffff", eyes: "#00ffff" } },
-      inferno:  { name: "🔥 Infierno",          colors: { head: "#ff3300", body: "#ff5500", limbs: "#ff4400", accent: "#ffaa00", eyes: "#ff0000" } },
-      frost:    { name: "❄️ Escarcha",          colors: { head: "#66ccff", body: "#99ddff", limbs: "#77ccff", accent: "#ffffff", eyes: "#00ccff" } },
-      necro:    { name: "💀 Necromántico",      colors: { head: "#330033", body: "#440044", limbs: "#330033", accent: "#00ff00", eyes: "#00ff00" } },
-    };
+<div class="lore-strip reveal" style="margin-top:4rem;">
+  <p>
+    <span class="highlight">⚒ ¡FORJA TU SKIN Y DEJA HUELLA EN EL MUNDO! ⚒</span><br><br>
+    Cada guerrero que entra al servidor lleva una piel distinta.
+    Elige entre <span class="highlight">quince linajes de color</span>,
+    combínalos con patrones y dale a tu rostro la expresión que
+    tu leyenda merece. <span class="highlight">Tu skin, tus reglas.</span>
+  </p>
+</div>
 
-    /* ─── PATRONES Y DISEÑOS ─────────────────────────────── */
-    const PATTERNS = {
-      none: { name: "Sin patrón", apply: (ctx, colors) => {} },
-      stripes: { 
-        name: "Rayas", 
-        apply: (ctx, colors) => {
-          ctx.fillStyle = 'rgba(0,0,0,0.2)';
-          for(let i = 0; i < 8; i += 2) {
-            ctx.fillRect(i * 16, 0, 16, 256);
-          }
-        }
-      },
-      dots: { 
-        name: "Puntos", 
-        apply: (ctx, colors) => {
-          ctx.fillStyle = 'rgba(255,255,255,0.1)';
-          for(let x = 0; x < 8; x++) {
-            for(let y = 0; y < 16; y++) {
-              if((x + y) % 2 === 0) {
-                ctx.fillRect(x * 16 + 4, y * 16 + 4, 8, 8);
-              }
-            }
-          }
-        }
-      },
-      diagonal: { 
-        name: "Diagonal", 
-        apply: (ctx, colors) => {
-          ctx.strokeStyle = 'rgba(0,0,0,0.15)';
-          ctx.lineWidth = 2;
-          for(let i = -256; i < 256; i += 32) {
-            ctx.beginPath();
-            ctx.moveTo(i, 0);
-            ctx.lineTo(i + 256, 256);
-            ctx.stroke();
-          }
-        }
-      },
-      checkered: { 
-        name: "Cuadros", 
-        apply: (ctx, colors) => {
-          ctx.fillStyle = 'rgba(0,0,0,0.1)';
-          for(let x = 0; x < 8; x++) {
-            for(let y = 0; y < 16; y++) {
-              if((x + y) % 2 === 0) {
-                ctx.fillRect(x * 16, y * 16, 16, 16);
-              }
-            }
-          }
-        }
-      },
-    };
+<section id="forja">
+  <p class="eyebrow" style="text-align:center; opacity:1;">🔨 EL TALLER</p>
+  <h2 class="section-title reveal">Forja tu Skin</h2>
+  <p class="section-sub reveal">Cada elección se refleja al instante en la vista previa</p>
 
-    /* ─── DIBUJADOR DE SKIN AVANZADO ─────────────────────── */
-    function drawMinecraftSkin(canvas, colors, pattern, faceDesign) {
-      const ctx = canvas.getContext('2d');
-      ctx.imageSmoothingEnabled = false;
-      ctx.fillStyle = 'rgba(0,0,0,0)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  <div class="forge-grid reveal">
 
-      const px = 16;
+    <div>
+      <div class="forge-panel">
+        <p class="forge-label">Nombre de tu Skin</p>
+        <input type="text" id="skinName" class="name-input" value="">
+        <button class="ghost-btn" id="randomNameBtn">🎲 Generar Nombre Aleatorio</button>
+      </div>
 
-      // Cabeza (8x8)
-      ctx.fillStyle = colors.head;
-      ctx.fillRect(0, 0, 8 * px, 8 * px);
-      
-      // Detalle de cabeza (overlay exterior)
-      ctx.fillStyle = 'rgba(0,0,0,0.1)';
-      ctx.fillRect(0.5 * px, 0.5 * px, 7 * px, 7 * px);
+      <div class="forge-panel" style="text-align:center;">
+        <p class="forge-label">Vista Previa</p>
+        <canvas id="skinCanvas" width="128" height="256"></canvas>
+        <button class="download-btn" id="downloadBtn">📥 DESCARGAR SKIN PNG</button>
+      </div>
+    </div>
 
-      // Ojos
-      ctx.fillStyle = colors.eyes;
-      ctx.fillRect(px, 2 * px, px, px);
-      ctx.fillRect(3 * px, 2 * px, px, px);
-      
-      ctx.fillStyle = '#000000';
-      switch(faceDesign.eyes) {
-        case 'normal':
-          ctx.fillRect(px + 2, 2 * px + 2, 4, 4);
-          ctx.fillRect(3 * px + 2, 2 * px + 2, 4, 4);
-          break;
-        case 'skull':
-          ctx.fillRect(px + 1, 2 * px + 1, 6, 6);
-          ctx.fillRect(3 * px + 1, 2 * px + 1, 6, 6);
-          break;
-        case 'evil':
-          ctx.fillRect(px, 2 * px + 1, px, 3);
-          ctx.fillRect(px + 3, 2 * px + 3, 2, 2);
-          ctx.fillRect(3 * px, 2 * px + 1, px, 3);
-          ctx.fillRect(3 * px + 3, 2 * px + 3, 2, 2);
-          break;
-      }
+    <div class="forge-panel">
+      <div class="forge-tabs">
+        <button class="forge-tab active" data-tab="colores">🎨 Colores</button>
+        <button class="forge-tab" data-tab="patrones">✨ Patrones</button>
+        <button class="forge-tab" data-tab="cara">😊 Rostro</button>
+      </div>
 
-      // Boca
-      ctx.fillStyle = '#000000';
-      switch(faceDesign.mouth) {
-        case 'smile':
-          ctx.fillRect(1.5 * px, 4 * px, 5 * px, 1 * px);
-          ctx.fillRect(1.5 * px, 4.5 * px, 0.5 * px, 0.5 * px);
-          ctx.fillRect(6 * px, 4.5 * px, 0.5 * px, 0.5 * px);
-          break;
-        case 'serious':
-          ctx.fillRect(1.5 * px, 4.5 * px, 5 * px, 0.5 * px);
-          break;
-        case 'evil':
-          ctx.fillRect(1.5 * px, 3.5 * px, 2 * px, 2 * px);
-          ctx.fillRect(4.5 * px, 3.5 * px, 2 * px, 2 * px);
-          break;
-      }
-
-      // Cuerpo (8x12)
-      ctx.fillStyle = colors.body;
-      ctx.fillRect(0, 8 * px, 8 * px, 12 * px);
-      
-      ctx.fillStyle = 'rgba(0,0,0,0.08)';
-      ctx.fillRect(0.5 * px, 8.5 * px, 7 * px, 11 * px);
-      
-      // Acento en el pecho
-      ctx.fillStyle = colors.accent;
-      ctx.fillRect(2 * px, 8.5 * px, 4 * px, 2 * px);
-      
-      ctx.fillStyle = 'rgba(255,255,255,0.15)';
-      ctx.fillRect(2.5 * px, 9 * px, 3 * px, 1 * px);
-
-      // Brazo izquierdo (4x12)
-      ctx.fillStyle = colors.limbs;
-      ctx.fillRect(8 * px, 8 * px, 4 * px, 12 * px);
-      ctx.fillStyle = 'rgba(0,0,0,0.1)';
-      ctx.fillRect(8.3 * px, 8.3 * px, 3.4 * px, 11.4 * px);
-
-      // Brazo derecho (4x12)
-      ctx.fillStyle = colors.limbs;
-      ctx.fillRect(0, 20 * px, 4 * px, 12 * px);
-      ctx.fillStyle = 'rgba(0,0,0,0.1)';
-      ctx.fillRect(0.3 * px, 20.3 * px, 3.4 * px, 11.4 * px);
-
-      // Pierna izquierda (4x12)
-      ctx.fillStyle = colors.limbs;
-      ctx.fillRect(4 * px, 20 * px, 4 * px, 12 * px);
-      ctx.fillStyle = 'rgba(0,0,0,0.1)';
-      ctx.fillRect(4.3 * px, 20.3 * px, 3.4 * px, 11.4 * px);
-
-      // Pierna derecha (4x12)
-      ctx.fillStyle = colors.limbs;
-      ctx.fillRect(12 * px, 20 * px, 4 * px, 12 * px);
-      ctx.fillStyle = 'rgba(0,0,0,0.1)';
-      ctx.fillRect(12.3 * px, 20.3 * px, 3.4 * px, 11.4 * px);
-
-      // Aplicar patrón
-      PATTERNS[pattern].apply(ctx, colors);
-
-      // Borde final
-      ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-      ctx.lineWidth = 0.5;
-      ctx.strokeRect(0, 0, 128, 256);
-    }
-
-    /* ─── COMPONENTE PRINCIPAL ──────────────────────────── */
-    function App() {
-      const canvasRef = useRef(null);
-      const [colors, setColors] = useState({
-        head: '#2d2d5c',
-        body: '#3d4a6b',
-        limbs: '#5a4a8a',
-        accent: '#ff6b9d',
-        eyes: '#ffff00',
-      });
-      const [pattern, setPattern] = useState('none');
-      const [faceDesign, setFaceDesign] = useState({
-        eyes: 'normal',
-        mouth: 'smile',
-      });
-      const [skinName, setSkinName] = useState(generateSkinName());
-      const [activeTab, setActiveTab] = useState('colors');
-      const [hoveredSocial, setHoveredSocial] = useState(null);
-      const [showAdvanced, setShowAdvanced] = useState(false);
-
-      useEffect(() => {
-        if (canvasRef.current) {
-          drawMinecraftSkin(canvasRef.current, colors, pattern, faceDesign);
-        }
-      }, [colors, pattern, faceDesign]);
-
-      const handleColorChange = (key, value) => {
-        setColors(prev => ({ ...prev, [key]: value }));
-      };
-
-      const handlePreset = (preset) => {
-        setColors(preset.colors);
-      };
-
-      const downloadSkin = () => {
-        const canvas = canvasRef.current;
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = `${skinName.replace(/\s+/g, '_')}_skin.png`;
-        link.click();
-      };
-
-      const SOCIALS = [
-        { icon: "🎵", label: "TikTok",    href: "https://www.tiktok.com/@dragonprimordial?lang=es" },
-        { icon: "𝕏",  label: "Twitter",   href: "https://x.com/dragonprimordia" },
-        { icon: "📸", label: "Instagram", href: "https://www.instagram.com/dragonprimordial/" },
-        { icon: "🧵", label: "Threads",   href: "https://www.threads.com/@dragonprimordial" },
-        { icon: "📘", label: "Facebook",  href: "https://www.facebook.com/profile.php?id=61575355656190" },
-        { icon: "💬", label: "Discord",   href: "https://discord.com/channels/1489401096530301128/1489401098518139032" },
-        { icon: "▶️", label: "YouTube",   href: "https://www.youtube.com/@Drag%C3%B3nPrimordial" },
-      ];
-
-      const outer = { 
-        background: "linear-gradient(170deg,#0A0E20 0%,#1A1E35 100%)", 
-        minHeight: "100vh", 
-        padding: "20px 16px 30px", 
-        fontFamily: "Georgia,'Times New Roman',serif", 
-        color: "#C8B8A8" 
-      };
-      const panel = { 
-        background: "rgba(10,14,32,0.92)", 
-        border: "1px solid #1A5A3A", 
-        borderRadius: 8 
-      };
-      const btnBase = { 
-        background: "transparent", 
-        borderRadius: 6, 
-        padding: "8px 12px", 
-        fontSize: 11, 
-        cursor: "pointer", 
-        letterSpacing: 1, 
-        fontFamily: "Georgia", 
-        transition: "all 0.2s",
-        border: "1px solid #1A5A3A",
-      };
-      const btnActive = {
-        ...btnBase,
-        color: "#00FF00",
-        background: "rgba(0,255,0,0.2)",
-        border: "1px solid #00FF00",
-      };
-
-      return (
-        <div style={outer}>
-
-          {/* TÍTULO */}
-          <h1 style={{ 
-            textAlign: "center", 
-            fontSize: "clamp(18px,3.5vw,28px)", 
-            letterSpacing: 6, 
-            color: "#00FF00", 
-            margin: "0 0 4px", 
-            textTransform: "uppercase", 
-            fontWeight: "normal",
-            textShadow: "0 0 15px rgba(0,255,0,0.4)"
-          }}>
-            🎮 MINECRAFT SKIN CREATOR PRO
-          </h1>
-          <p style={{ 
-            textAlign: "center", 
-            fontSize: 12, 
-            color: "#2A7A3A", 
-            margin: "0 0 20px", 
-            letterSpacing: 2 
-          }}>
-            EDITOR AVANZADO · PRESETS · PATRONES · EDITOR DE CARA
-          </p>
-
-          <div style={{ 
-            display: "flex", 
-            gap: 18, 
-            maxWidth: 1200, 
-            margin: "0 auto", 
-            flexWrap: "wrap" 
-          }}>
-
-            {/* ══ PREVIEW Y NOMBRE ══════════════════════════════════ */}
-            <div style={{ 
-              flex: "1 1 300px", 
-              minWidth: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center"
-            }}>
-              <div style={{
-                ...panel,
-                padding: "20px",
-                width: "100%",
-                textAlign: "center",
-                marginBottom: "12px"
-              }}>
-                <p style={{ fontSize: 10, color: "#2A7A3A", letterSpacing: 1, margin: "0 0 8px", textTransform: "uppercase" }}>
-                  Nombre de tu skin
-                </p>
-                <input
-                  type="text"
-                  value={skinName}
-                  onChange={(e) => setSkinName(e.target.value)}
-                  placeholder="Nombre de la skin"
-                  style={{
-                    width: "100%",
-                    padding: "8px 12px",
-                    background: "rgba(26,90,58,0.2)",
-                    border: "1px solid #1A5A3A",
-                    borderRadius: 4,
-                    color: "#7AA87A",
-                    fontFamily: "Georgia",
-                    marginBottom: "8px",
-                    textAlign: "center",
-                    fontSize: 12
-                  }}
-                />
-                <button
-                  onClick={() => setSkinName(generateSkinName())}
-                  style={{
-                    ...btnBase,
-                    width: "100%",
-                    color: "#7AA87A",
-                    background: "rgba(26,90,58,0.3)",
-                  }}
-                >
-                  🎲 Generar nombre aleatorio
-                </button>
-              </div>
-
-              <div style={{
-                ...panel,
-                padding: "20px",
-                width: "100%",
-                textAlign: "center",
-                marginBottom: "12px"
-              }}>
-                <p style={{ fontSize: 10, color: "#2A7A3A", letterSpacing: 1, margin: "0 0 12px" }}>
-                  VISTA PREVIA EN TIEMPO REAL
-                </p>
-                <canvas 
-                  ref={canvasRef} 
-                  width={128} 
-                  height={256}
-                  style={{ 
-                    width: "100%",
-                    height: "auto",
-                    border: "3px solid #00FF00",
-                    borderRadius: 6,
-                    imageRendering: "pixelated",
-                    boxShadow: "0 0 20px rgba(0,255,0,0.2)"
-                  }} 
-                />
-              </div>
-
-              <button
-                onClick={downloadSkin}
-                style={{
-                  ...btnBase,
-                  width: "100%",
-                  color: "#00FF00",
-                  background: "rgba(0,255,0,0.15)",
-                  border: "2px solid #00FF00",
-                  padding: "12px",
-                  fontSize: 13,
-                  fontWeight: "bold",
-                  boxShadow: "0 0 15px rgba(0,255,0,0.2)"
-                }}
-              >
-                📥 DESCARGAR SKIN PNG
-              </button>
-            </div>
-
-            {/* ══ PANEL DE CONTROL ══════════════════════════════════ */}
-            <div style={{ flex: "1 1 380px", minWidth: 0 }}>
-              {/* TABS */}
-              <div style={{
-                ...panel,
-                padding: "8px",
-                marginBottom: "12px",
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: "4px"
-              }}>
-                {[
-                  { id: 'colors', icon: '🎨', label: 'Colores' },
-                  { id: 'patterns', icon: '✨', label: 'Patrones' },
-                  { id: 'face', icon: '😊', label: 'Cara' },
-                ].map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    style={{
-                      ...(activeTab === tab.id ? btnActive : btnBase),
-                      color: activeTab === tab.id ? "#00FF00" : "#7AA87A",
-                    }}
-                  >
-                    {tab.icon} {tab.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* TAB: COLORES */}
-              {activeTab === 'colors' && (
-                <div style={{ ...panel, padding: "16px" }}>
-                  <p style={{ fontSize: 11, color: "#2A7A3A", letterSpacing: 1, margin: "0 0 12px", textTransform: "uppercase" }}>
-                    Colores principales
-                  </p>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
-                    {[
-                      { key: 'head', label: '👤 Cabeza' },
-                      { key: 'body', label: '👕 Cuerpo' },
-                      { key: 'limbs', label: '💪 Extremidades' },
-                      { key: 'accent', label: '✨ Acentos' },
-                    ].map(({ key, label }) => (
-                      <div key={key}>
-                        <p style={{ fontSize: 11, color: "#7AA87A", margin: "0 0 6px" }}>{label}</p>
-                        <input
-                          type="color"
-                          value={colors[key]}
-                          onChange={(e) => handleColorChange(key, e.target.value)}
-                          style={{
-                            width: "100%",
-                            height: "40px",
-                            border: "2px solid #1A5A3A",
-                            borderRadius: 4,
-                            cursor: "pointer"
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  <div>
-                    <p style={{ fontSize: 11, color: "#7AA87A", margin: "0 0 6px" }}>👁️ Ojos</p>
-                    <input
-                      type="color"
-                      value={colors.eyes}
-                      onChange={(e) => handleColorChange('eyes', e.target.value)}
-                      style={{
-                        width: "100%",
-                        height: "40px",
-                        border: "2px solid #1A5A3A",
-                        borderRadius: 4,
-                        cursor: "pointer"
-                      }}
-                    />
-                  </div>
-
-                  <p style={{ fontSize: 11, color: "#2A7A3A", letterSpacing: 1, margin: "16px 0 12px", textTransform: "uppercase" }}>
-                    Presets temáticos
-                  </p>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 6, maxHeight: "300px", overflowY: "auto" }}>
-                    {Object.entries(COLOR_PRESETS).map(([key, preset]) => (
-                      <button
-                        key={key}
-                        onClick={() => handlePreset(preset)}
-                        style={{
-                          ...btnBase,
-                          color: "#7AA87A",
-                          background: "rgba(26,90,58,0.3)",
-                          textAlign: "left"
-                        }}
-                      >
-                        {preset.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* TAB: PATRONES */}
-              {activeTab === 'patterns' && (
-                <div style={{ ...panel, padding: "16px" }}>
-                  <p style={{ fontSize: 11, color: "#2A7A3A", letterSpacing: 1, margin: "0 0 12px", textTransform: "uppercase" }}>
-                    Aplicar patrón a la skin
-                  </p>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 6 }}>
-                    {Object.entries(PATTERNS).map(([key, pat]) => (
-                      <button
-                        key={key}
-                        onClick={() => setPattern(key)}
-                        style={{
-                          ...(pattern === key ? btnActive : btnBase),
-                          color: pattern === key ? "#00FF00" : "#7AA87A",
-                          background: pattern === key ? "rgba(0,255,0,0.2)" : "rgba(26,90,58,0.3)",
-                        }}
-                      >
-                        {pat.name}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div style={{
-                    background: "rgba(42,75,58,0.25)",
-                    border: "1px solid #2A5A3A",
-                    borderRadius: 6,
-                    padding: "12px",
-                    marginTop: "14px",
-                    fontSize: 11,
-                    color: "#4A8A5A",
-                    lineHeight: 1.6
-                  }}>
-                    Los patrones se aplican como un overlay transparente sobre tu skin. Puedes combinarlos con cualquier preset.
-                  </div>
-                </div>
-              )}
-
-              {/* TAB: CARA */}
-              {activeTab === 'face' && (
-                <div style={{ ...panel, padding: "16px" }}>
-                  <p style={{ fontSize: 11, color: "#2A7A3A", letterSpacing: 1, margin: "0 0 12px", textTransform: "uppercase" }}>
-                    Diseño del rostro
-                  </p>
-
-                  <div style={{ marginBottom: 14 }}>
-                    <p style={{ fontSize: 11, color: "#7AA87A", margin: "0 0 8px" }}>Tipo de ojos</p>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
-                      {['normal', 'skull', 'evil'].map(type => (
-                        <button
-                          key={type}
-                          onClick={() => setFaceDesign(prev => ({ ...prev, eyes: type }))}
-                          style={{
-                            ...btnBase,
-                            color: faceDesign.eyes === type ? "#00FF00" : "#7AA87A",
-                            background: faceDesign.eyes === type ? "rgba(0,255,0,0.2)" : "rgba(26,90,58,0.3)",
-                          }}
-                        >
-                          {type === 'normal' ? '😊' : type === 'skull' ? '💀' : '😈'} {type}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <p style={{ fontSize: 11, color: "#7AA87A", margin: "0 0 8px" }}>Expresión bucal</p>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
-                      {['smile', 'serious', 'evil'].map(type => (
-                        <button
-                          key={type}
-                          onClick={() => setFaceDesign(prev => ({ ...prev, mouth: type }))}
-                          style={{
-                            ...btnBase,
-                            color: faceDesign.mouth === type ? "#00FF00" : "#7AA87A",
-                            background: faceDesign.mouth === type ? "rgba(0,255,0,0.2)" : "rgba(26,90,58,0.3)",
-                          }}
-                        >
-                          {type === 'smile' ? '😊' : type === 'serious' ? '😐' : '😠'} {type}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div style={{
-                    background: "rgba(42,75,58,0.25)",
-                    border: "1px solid #2A5A3A",
-                    borderRadius: 6,
-                    padding: "12px",
-                    marginTop: "14px",
-                    fontSize: 11,
-                    color: "#4A8A5A",
-                    lineHeight: 1.6
-                  }}>
-                    Personaliza la expresión de tu personaje combinando diferentes tipos de ojos y boca.
-                  </div>
-                </div>
-              )}
-
-              {/* BOTONES RÁPIDOS */}
-              <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                <button
-                  onClick={() => {
-                    setColors({
-                      head: '#3d4a6b',
-                      body: '#5a4a8a',
-                      limbs: '#7a6aaa',
-                      accent: '#ff6b9d',
-                      eyes: '#ffff00',
-                    });
-                    setPattern('none');
-                    setFaceDesign({ eyes: 'normal', mouth: 'smile' });
-                  }}
-                  style={{
-                    ...btnBase,
-                    color: "#7AA87A",
-                    background: "rgba(26,90,58,0.3)"
-                  }}
-                >
-                  ↺ Reiniciar todo
-                </button>
-                <button
-                  onClick={() => setShowAdvanced(!showAdvanced)}
-                  style={{
-                    ...btnBase,
-                    color: "#7AA87A",
-                    background: "rgba(26,90,58,0.3)"
-                  }}
-                >
-                  ⚙️ Avanzado
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* ══ SECCIÓN AVANZADA ════════════════════════════════════ */}
-          {showAdvanced && (
-            <div style={{ ...panel, maxWidth: 1200, margin: "16px auto 0", padding: "16px" }}>
-              <p style={{ fontSize: 13, color: "#00FF00", marginBottom: 12, fontWeight: "bold" }}>
-                ⚙️ OPCIONES AVANZADAS
-              </p>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
-                <div>
-                  <p style={{ fontSize: 11, color: "#7AA87A", margin: "0 0 8px" }}>Saturación de colores</p>
-                  <input type="range" min="0" max="200" defaultValue="100" style={{ width: "100%" }} />
-                  <p style={{ fontSize: 10, color: "#2A7A3A", marginTop: 4 }}>Ajusta la intensidad del color</p>
-                </div>
-                <div>
-                  <p style={{ fontSize: 11, color: "#7AA87A", margin: "0 0 8px" }}>Brillo</p>
-                  <input type="range" min="0" max="200" defaultValue="100" style={{ width: "100%" }} />
-                  <p style={{ fontSize: 10, color: "#2A7A3A", marginTop: 4 }}>Aumenta o reduce el brillo</p>
-                </div>
-                <div>
-                  <p style={{ fontSize: 11, color: "#7AA87A", margin: "0 0 8px" }}>Contraste</p>
-                  <input type="range" min="0" max="200" defaultValue="100" style={{ width: "100%" }} />
-                  <p style={{ fontSize: 10, color: "#2A7A3A", marginTop: 4 }}>Ajusta el contraste general</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ══ INFO TÉCNICA ════════════════════════════════════ */}
-          <div style={{ ...panel, maxWidth: 1200, margin: "16px auto 0", padding: "14px 18px" }}>
-            <div style={{ fontSize: 14, color: "#00FF00", marginBottom: 8, fontWeight: "bold" }}>
-              ℹ️ INFORMACIÓN TÉCNICA
-            </div>
-            <div style={{ fontSize: 12, color: "#4A8A5A", lineHeight: 1.8 }}>
-              <p style={{ margin: "0 0 8px" }}>
-                <strong style={{ color: "#00FF00" }}>Formato:</strong> Las skins de Minecraft son imágenes PNG de 64x64 píxeles con mapeado UV específico para cada parte del cuerpo.
-              </p>
-              <p style={{ margin: "0 0 8px" }}>
-                <strong style={{ color: "#00FF00" }}>Compatibilidad:</strong> 100% compatible con Java Edition, TLauncher, MultiMC, Launcher Forge y otros clientes.
-              </p>
-              <p style={{ margin: "0 0 8px" }}>
-                <strong style={{ color: "#00FF00" }}>Descarga automática:</strong> Tu skin se descarga automáticamente con el nombre personalizado que elegiste.
-              </p>
-              <p style={{ margin: 0 }}>
-                <strong style={{ color: "#00FF00" }}>Instalación:</strong> En TLauncher: Área de usuario → Subir skin → Selecciona tu PNG → Hecho.
-              </p>
-            </div>
-          </div>
-
-          {/* ══ REDES SOCIALES ══════════════════════════════════ */}
-          <div style={{ ...panel, maxWidth: 1200, margin: "10px auto 0", padding: "12px 18px" }}>
-            <div style={{ fontSize: 10, color: "#2A7A3A", letterSpacing: 3, marginBottom: 10, textAlign: "center" }}>
-              🎮 SÍGUENOS · DRAGÓN PRIMORDIAL
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center" }}>
-              {SOCIALS.map(({ icon, label, href }) => (
-                <a 
-                  key={label} 
-                  href={href} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => setHoveredSocial(label)}
-                  onMouseLeave={() => setHoveredSocial(null)}
-                  style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    gap: 6,
-                    padding: "6px 13px",
-                    background: hoveredSocial === label ? "rgba(0,255,0,0.12)" : "rgba(255,255,255,0.02)",
-                    border: `1px solid ${hoveredSocial === label ? "#00FF00" : "#1A5A3A"}`,
-                    borderRadius: 6, 
-                    color: hoveredSocial === label ? "#00FF00" : "#5A8A6A",
-                    textDecoration: "none", 
-                    fontSize: 12, 
-                    fontFamily: "Georgia",
-                    transition: "all 0.2s", 
-                    letterSpacing: "0.05em",
-                  }}>
-                  <span style={{ fontSize: 14 }}>{icon}</span>
-                  {label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* PIE */}
-          <p style={{ 
-            textAlign: "center", 
-            fontSize: 10, 
-            color: "#2A5A3A", 
-            marginTop: 16, 
-            letterSpacing: 1 
-          }}>
-            🎨 CREA · 🎮 PERSONALIZA · 💾 DESCARGA · 🚀 JUEGA
-          </p>
-          <p style={{ 
-            textAlign: "center", 
-            fontSize: 10, 
-            color: "#1A4A2A", 
-            marginTop: 4, 
-            letterSpacing: 1 
-          }}>
-            © Dragón Primordial · @dragonprimordial · MINECRAFT SKIN CREATOR PRO v2.0
-          </p>
-
+      <div class="forge-panel-tab active" id="tab-colores">
+        <p class="forge-label" style="text-align:left;">Colores Principales</p>
+        <div class="color-grid">
+          <div class="color-slot"><label>👤 Cabeza</label><input type="color" id="c-head" value="#2d2d5c"></div>
+          <div class="color-slot"><label>👕 Cuerpo</label><input type="color" id="c-body" value="#3d4a6b"></div>
+          <div class="color-slot"><label>💪 Extremidades</label><input type="color" id="c-limbs" value="#5a4a8a"></div>
+          <div class="color-slot"><label>✨ Acentos</label><input type="color" id="c-accent" value="#ff6b9d"></div>
         </div>
-      );
-    }
+        <div class="color-slot" style="margin-bottom: 1.4rem;"><label>👁️ Ojos</label><input type="color" id="c-eyes" value="#ffff00"></div>
 
-    /* ─── MONTAR ─────────────────────────────────────────── */
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
-  </script>
+        <p class="forge-label" style="text-align:left;">Linajes Predefinidos</p>
+        <div class="preset-grid" id="presetGrid"></div>
+      </div>
+
+      <div class="forge-panel-tab" id="tab-patrones">
+        <p class="forge-label" style="text-align:left;">Aplicar Patrón a la Skin</p>
+        <div id="patternList"></div>
+        <div class="info-block" style="margin-top:1rem; padding:1rem;">
+          <p style="margin:0;">Los patrones se aplican como un grabado transparente sobre tu skin. Puedes combinarlos con cualquier linaje.</p>
+        </div>
+      </div>
+
+      <div class="forge-panel-tab" id="tab-cara">
+        <div class="face-cols">
+          <div>
+            <h4>Tipo de Ojos</h4>
+            <div class="option-row selected" data-group="eyes" data-value="normal"><span class="option-emoji">😊</span><span class="option-name">Normal</span></div>
+            <div class="option-row" data-group="eyes" data-value="skull"><span class="option-emoji">💀</span><span class="option-name">Calavera</span></div>
+            <div class="option-row" data-group="eyes" data-value="evil"><span class="option-emoji">😈</span><span class="option-name">Maligno</span></div>
+          </div>
+          <div>
+            <h4>Expresión Bucal</h4>
+            <div class="option-row selected" data-group="mouth" data-value="smile"><span class="option-emoji">😊</span><span class="option-name">Sonrisa</span></div>
+            <div class="option-row" data-group="mouth" data-value="serious"><span class="option-emoji">😐</span><span class="option-name">Serio</span></div>
+            <div class="option-row" data-group="mouth" data-value="evil"><span class="option-emoji">😠</span><span class="option-name">Furioso</span></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="ghost-btn" id="resetBtn" style="margin-top:1.4rem;">↺ Reiniciar Todo</button>
+    </div>
+  </div>
+</section>
+
+<div class="divider" data-icon="ℹ"></div>
+
+<section id="info">
+  <h2 class="section-title reveal">ℹ️ Información Técnica</h2>
+  <p class="section-sub reveal">Todo lo que necesitas saber antes de instalar tu skin</p>
+  <div class="info-block reveal">
+    <p><strong>Formato:</strong> Las skins de Minecraft son imágenes PNG de 64×64 píxeles con mapeado UV específico para cada parte del cuerpo.</p>
+    <p><strong>Compatibilidad:</strong> 100% compatible con Java Edition, TLauncher, MultiMC, Launcher Forge y otros clientes.</p>
+    <p><strong>Descarga automática:</strong> Tu skin se descarga con el nombre personalizado que elegiste en la forja.</p>
+    <p style="margin-bottom:0;"><strong>Instalación en TLauncher:</strong> Área de usuario → Subir skin → Selecciona tu PNG → Hecho.</p>
+  </div>
+</section>
+
+<div class="lore-strip reveal">
+  <p>
+    🔥 <span class="highlight">¿Ya forjaste tu skin?</span><br><br>
+    Compártela con la comunidad y sube capturas de tu personaje en acción.
+    <span class="highlight">Tu leyenda apenas comienza.</span>
+  </p>
+</div>
+
+<div class="divider" data-icon="📣"></div>
+
+<div class="social-section" id="redes">
+  <p class="eyebrow" style="opacity:1;">SÍGUENOS</p>
+  <h2 class="section-title reveal">📣 Comunidad</h2>
+  <p class="section-sub reveal">Únete a Dragón Primordial en todas las plataformas</p>
+  <div class="social-grid reveal">
+    <a class="social-link" href="https://www.tiktok.com/@dragonprimordial?lang=es" target="_blank"><span class="s-icon">🎵</span> TikTok</a>
+    <a class="social-link" href="https://x.com/dragonprimordia" target="_blank"><span class="s-icon">𝕏</span> Twitter</a>
+    <a class="social-link" href="https://www.instagram.com/dragonprimordial/" target="_blank"><span class="s-icon">📸</span> Instagram</a>
+    <a class="social-link" href="https://www.threads.com/@dragonprimordial" target="_blank"><span class="s-icon">🧵</span> Threads</a>
+    <a class="social-link" href="https://www.facebook.com/profile.php?id=61575355656190" target="_blank"><span class="s-icon">📘</span> Facebook</a>
+    <a class="social-link" href="https://discord.com/channels/1489401096530301128/1489401098518139032" target="_blank"><span class="s-icon">💬</span> Discord</a>
+    <a class="social-link" href="https://www.youtube.com/@Drag%C3%B3nPrimordial" target="_blank"><span class="s-icon">▶️</span> YouTube</a>
+  </div>
+</div>
+
+<footer>
+  <span>🎮 MINECRAFT SKIN FORGE</span> · Editor de Skins · Por Dragón Primordial<br><br>
+  Forjado con fuego y garras 🐲
+</footer>
+
+<script>
+const canvasP = document.getElementById('particles');
+const ctxP = canvasP.getContext('2d');
+let W = canvasP.width = window.innerWidth;
+let H = canvasP.height = window.innerHeight;
+window.addEventListener('resize', () => { W = canvasP.width = window.innerWidth; H = canvasP.height = window.innerHeight; });
+
+const embers = Array.from({length:80}, () => ({
+  x: Math.random()*W, y: H+Math.random()*100,
+  size: Math.random()*2.5+0.5, speed: Math.random()*0.8+0.2,
+  drift: (Math.random()-0.5)*0.4, alpha: Math.random()*0.6+0.1, hue: Math.random()*40+10
+}));
+
+function drawEmbers() {
+  ctxP.clearRect(0,0,W,H);
+  embers.forEach(e => {
+    e.y-=e.speed; e.x+=e.drift;
+    e.alpha+=((Math.random()-0.5)*0.02);
+    e.alpha=Math.max(0.05,Math.min(0.7,e.alpha));
+    if(e.y<-10){e.y=H+10; e.x=Math.random()*W;}
+    ctxP.beginPath(); ctxP.arc(e.x,e.y,e.size,0,Math.PI*2);
+    ctxP.fillStyle=`hsla(${e.hue},100%,60%,${e.alpha})`; ctxP.fill();
+  });
+  requestAnimationFrame(drawEmbers);
+}
+drawEmbers();
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => {
+    if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); obs.unobserve(e.target); }
+  });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const NOMBRE_PARTS = {
+  adjectives: ["Épico", "Oscuro", "Misterioso", "Luminoso", "Salvaje", "Antiguo", "Ardiente", "Gélido", "Espectral", "Etéreo", "Divino", "Infernal"],
+  nouns: ["Dragón", "Guerrero", "Brujo", "Espectro", "Titán", "Fénix", "Demonio", "Ángel", "Berserker", "Apóstol", "Esencia", "Vengador"],
+};
+function generateSkinName() {
+  const adj = NOMBRE_PARTS.adjectives[Math.floor(Math.random() * NOMBRE_PARTS.adjectives.length)];
+  const noun = NOMBRE_PARTS.nouns[Math.floor(Math.random() * NOMBRE_PARTS.nouns.length)];
+  return `${adj} ${noun}`;
+}
+
+const COLOR_PRESETS = {
+  dragon:   { name: "🐉 Dragón Épico",      colors: { head: "#2d2d5c", body: "#3d4a6b", limbs: "#5a4a8a", accent: "#ff6b9d", eyes: "#ffff00" } },
+  skeleton: { name: "💀 Esqueleto",         colors: { head: "#9a9a9a", body: "#8a8a8a", limbs: "#7a7a7a", accent: "#000000", eyes: "#333333" } },
+  creeper:  { name: "🟩 Creeper",           colors: { head: "#4a7c3a", body: "#5a8c4a", limbs: "#4a7c3a", accent: "#3a6c2a", eyes: "#000000" } },
+  nether:   { name: "🔥 Nether Warrior",    colors: { head: "#8b1515", body: "#a01a1a", limbs: "#951f1f", accent: "#ffaa00", eyes: "#ff0000" } },
+  ocean:    { name: "🌊 Océano Profundo",   colors: { head: "#1a5a7a", body: "#2a6a9a", limbs: "#1a4a6a", accent: "#00ffff", eyes: "#00ccff" } },
+  forest:   { name: "🌲 Bosque Encantado",  colors: { head: "#2d5a1a", body: "#3a6a2a", limbs: "#2d5a1a", accent: "#ffff00", eyes: "#00ff00" } },
+  twilight: { name: "🌙 Crepúsculo",        colors: { head: "#4a3a7a", body: "#6a5a9a", limbs: "#5a4a8a", accent: "#ff1493", eyes: "#9933ff" } },
+  sunset:   { name: "🌅 Atardecer",         colors: { head: "#8a3a1a", body: "#aa5a2a", limbs: "#9a4a2a", accent: "#ffaa00", eyes: "#ff6600" } },
+  void:     { name: "⚫ Vacío",              colors: { head: "#0a0a0a", body: "#1a1a1a", limbs: "#0f0f0f", accent: "#ff00ff", eyes: "#00ffff" } },
+  radiant:  { name: "✨ Radiante",          colors: { head: "#ffff99", body: "#ffff66", limbs: "#ffff33", accent: "#ffffff", eyes: "#ffff00" } },
+  shadow:   { name: "🌑 Sombra Ninja",      colors: { head: "#1a1a1a", body: "#2a2a2a", limbs: "#1f1f1f", accent: "#ff0000", eyes: "#ff0000" } },
+  crystal:  { name: "💎 Cristal",           colors: { head: "#00ffff", body: "#00ff88", limbs: "#00ff99", accent: "#00ffff", eyes: "#00ffff" } },
+  inferno:  { name: "🔥 Infierno",          colors: { head: "#ff3300", body: "#ff5500", limbs: "#ff4400", accent: "#ffaa00", eyes: "#ff0000" } },
+  frost:    { name: "❄️ Escarcha",          colors: { head: "#66ccff", body: "#99ddff", limbs: "#77ccff", accent: "#ffffff", eyes: "#00ccff" } },
+  necro:    { name: "💀 Necromántico",      colors: { head: "#330033", body: "#440044", limbs: "#330033", accent: "#00ff00", eyes: "#00ff00" } },
+};
+
+const PATTERNS = {
+  none:      { name: "Sin Patrón", emoji: "◻️", apply: () => {} },
+  stripes:   { name: "Rayas", emoji: "▤", apply: (ctx) => {
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    for(let i = 0; i < 8; i += 2) ctx.fillRect(i * 16, 0, 16, 256);
+  }},
+  dots:      { name: "Puntos", emoji: "⚬", apply: (ctx) => {
+    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+    for(let x = 0; x < 8; x++) for(let y = 0; y < 16; y++) if((x + y) % 2 === 0) ctx.fillRect(x * 16 + 4, y * 16 + 4, 8, 8);
+  }},
+  diagonal:  { name: "Diagonal", emoji: "◢", apply: (ctx) => {
+    ctx.strokeStyle = 'rgba(0,0,0,0.15)'; ctx.lineWidth = 2;
+    for(let i = -256; i < 256; i += 32) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + 256, 256); ctx.stroke(); }
+  }},
+  checkered: { name: "Cuadros", emoji: "▦", apply: (ctx) => {
+    ctx.fillStyle = 'rgba(0,0,0,0.1)';
+    for(let x = 0; x < 8; x++) for(let y = 0; y < 16; y++) if((x + y) % 2 === 0) ctx.fillRect(x * 16, y * 16, 16, 16);
+  }},
+};
+
+const DEFAULT_COLORS = { head: '#2d2d5c', body: '#3d4a6b', limbs: '#5a4a8a', accent: '#ff6b9d', eyes: '#ffff00' };
+let state = {
+  colors: { ...DEFAULT_COLORS },
+  pattern: 'none',
+  face: { eyes: 'normal', mouth: 'smile' },
+};
+
+function drawSkin() {
+  const canvas = document.getElementById('skinCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const { colors, pattern, face } = state;
+  const px = 16;
+
+  ctx.fillStyle = colors.head;
+  ctx.fillRect(0, 0, 8 * px, 8 * px);
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(0.5 * px, 0.5 * px, 7 * px, 7 * px);
+
+  ctx.fillStyle = colors.eyes;
+  ctx.fillRect(px, 2 * px, px, px);
+  ctx.fillRect(3 * px, 2 * px, px, px);
+
+  ctx.fillStyle = '#000000';
+  switch(face.eyes) {
+    case 'normal':
+      ctx.fillRect(px + 2, 2 * px + 2, 4, 4);
+      ctx.fillRect(3 * px + 2, 2 * px + 2, 4, 4);
+      break;
+    case 'skull':
+      ctx.fillRect(px + 1, 2 * px + 1, 6, 6);
+      ctx.fillRect(3 * px + 1, 2 * px + 1, 6, 6);
+      break;
+    case 'evil':
+      ctx.fillRect(px, 2 * px + 1, px, 3);
+      ctx.fillRect(px + 3, 2 * px + 3, 2, 2);
+      ctx.fillRect(3 * px, 2 * px + 1, px, 3);
+      ctx.fillRect(3 * px + 3, 2 * px + 3, 2, 2);
+      break;
+  }
+
+  ctx.fillStyle = '#000000';
+  switch(face.mouth) {
+    case 'smile':
+      ctx.fillRect(1.5 * px, 4 * px, 5 * px, 1 * px);
+      ctx.fillRect(1.5 * px, 4.5 * px, 0.5 * px, 0.5 * px);
+      ctx.fillRect(6 * px, 4.5 * px, 0.5 * px, 0.5 * px);
+      break;
+    case 'serious':
+      ctx.fillRect(1.5 * px, 4.5 * px, 5 * px, 0.5 * px);
+      break;
+    case 'evil':
+      ctx.fillRect(1.5 * px, 3.5 * px, 2 * px, 2 * px);
+      ctx.fillRect(4.5 * px, 3.5 * px, 2 * px, 2 * px);
+      break;
+  }
+
+  ctx.fillStyle = colors.body;
+  ctx.fillRect(0, 8 * px, 8 * px, 12 * px);
+  ctx.fillStyle = 'rgba(0,0,0,0.08)';
+  ctx.fillRect(0.5 * px, 8.5 * px, 7 * px, 11 * px);
+  ctx.fillStyle = colors.accent;
+  ctx.fillRect(2 * px, 8.5 * px, 4 * px, 2 * px);
+  ctx.fillStyle = 'rgba(255,255,255,0.15)';
+  ctx.fillRect(2.5 * px, 9 * px, 3 * px, 1 * px);
+
+  ctx.fillStyle = colors.limbs;
+  ctx.fillRect(8 * px, 8 * px, 4 * px, 12 * px);
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(8.3 * px, 8.3 * px, 3.4 * px, 11.4 * px);
+
+  ctx.fillStyle = colors.limbs;
+  ctx.fillRect(0, 20 * px, 4 * px, 12 * px);
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(0.3 * px, 20.3 * px, 3.4 * px, 11.4 * px);
+
+  ctx.fillStyle = colors.limbs;
+  ctx.fillRect(4 * px, 20 * px, 4 * px, 12 * px);
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(4.3 * px, 20.3 * px, 3.4 * px, 11.4 * px);
+
+  ctx.fillStyle = colors.limbs;
+  ctx.fillRect(12 * px, 20 * px, 4 * px, 12 * px);
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(12.3 * px, 20.3 * px, 3.4 * px, 11.4 * px);
+
+  PATTERNS[pattern].apply(ctx, colors);
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+  ctx.lineWidth = 0.5;
+  ctx.strokeRect(0, 0, 128, 256);
+}
+
+const nameInput = document.getElementById('skinName');
+nameInput.value = generateSkinName();
+
+document.getElementById('randomNameBtn').addEventListener('click', () => { nameInput.value = generateSkinName(); });
+
+['head','body','limbs','accent','eyes'].forEach(key => {
+  const input = document.getElementById('c-' + key);
+  input.value = state.colors[key];
+  input.addEventListener('input', (e) => { state.colors[key] = e.target.value; drawSkin(); });
+});
+
+const presetGrid = document.getElementById('presetGrid');
+Object.entries(COLOR_PRESETS).forEach(([key, preset]) => {
+  const card = document.createElement('div');
+  card.className = 'preset-card';
+  card.dataset.key = key;
+  card.innerHTML = `<span class="p-name">${preset.name}</span>`;
+  card.addEventListener('click', () => {
+    state.colors = { ...preset.colors };
+    ['head','body','limbs','accent','eyes'].forEach(k => { document.getElementById('c-'+k).value = state.colors[k]; });
+    document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    drawSkin();
+  });
+  presetGrid.appendChild(card);
+});
+
+const patternList = document.getElementById('patternList');
+Object.entries(PATTERNS).forEach(([key, pat]) => {
+  const row = document.createElement('div');
+  row.className = 'option-row' + (key === 'none' ? ' selected' : '');
+  row.dataset.key = key;
+  row.innerHTML = `<span class="option-emoji">${pat.emoji}</span><span class="option-name">${pat.name}</span>`;
+  row.addEventListener('click', () => {
+    state.pattern = key;
+    document.querySelectorAll('#patternList .option-row').forEach(r => r.classList.remove('selected'));
+    row.classList.add('selected');
+    drawSkin();
+  });
+  patternList.appendChild(row);
+});
+
+document.querySelectorAll('.option-row[data-group]').forEach(row => {
+  row.addEventListener('click', () => {
+    const group = row.dataset.group;
+    const value = row.dataset.value;
+    state.face[group] = value;
+    document.querySelectorAll(`.option-row[data-group="${group}"]`).forEach(r => r.classList.remove('selected'));
+    row.classList.add('selected');
+    drawSkin();
+  });
+});
+
+document.querySelectorAll('.forge-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.forge-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.forge-panel-tab').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  state = { colors: { ...DEFAULT_COLORS }, pattern: 'none', face: { eyes: 'normal', mouth: 'smile' } };
+  ['head','body','limbs','accent','eyes'].forEach(k => { document.getElementById('c-'+k).value = state.colors[k]; });
+  document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('#patternList .option-row').forEach(r => r.classList.remove('selected'));
+  document.querySelector('#patternList .option-row[data-key="none"]').classList.add('selected');
+  document.querySelectorAll('.option-row[data-group]').forEach(r => r.classList.remove('selected'));
+  document.querySelector('.option-row[data-group="eyes"][data-value="normal"]').classList.add('selected');
+  document.querySelector('.option-row[data-group="mouth"][data-value="smile"]').classList.add('selected');
+  drawSkin();
+});
+
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const canvas = document.getElementById('skinCanvas');
+  const link = document.createElement('a');
+  link.href = canvas.toDataURL('image/png');
+  link.download = `${nameInput.value.trim().replace(/\s+/g, '_') || 'skin'}_skin.png`;
+  link.click();
+});
+
+drawSkin();
+</script>
 </body>
 </html>
